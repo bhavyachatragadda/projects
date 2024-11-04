@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Content Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        textarea { width: 100%; height: 100px; }
+        #output { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>AI Content Generator</h1>
+    <form id="contentForm">
+        <label for="contentType">Select Content Type:</label>
+        <select id="contentType">
+            <option value="poem">Poem</option>
+            <option value="joke">Joke</option>
+            <option value="recipe">Recipe</option>
+        </select>
+        <br><br>
+        <label for="userInput">Your Instructions:</label>
+        <textarea id="userInput" placeholder="Enter your instructions here..."></textarea>
+        <br>
+        <button type="submit">Generate Content</button>
+    </form>
+    
+    <div id="output"></div>
+
+    <script>
+        document.getElementById('contentForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const contentType = document.getElementById('contentType').value;
+            const userInput = document.getElementById('userInput').value;
+
+            const response = await fetch('/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contentType, userInput })
+            });
+
+            const data = await response.json();
+            document.getElementById('output').innerText = data.generatedContent;
+        });
+    </script>
+</body>
+</html>
